@@ -8,17 +8,17 @@ type MatchInput = Pick<
   'startTime' | 'endTime' | 'status'
 >;
 
-export function getMatchStauts(
+export function getMatchStatus(
   startTime: Date | null,
-  endTIme: Date | null,
+  endTime: Date | null,
   now = new Date()
 ): MatchStatus | null {
-  if (startTime === null || endTIme === null) {
+  if (startTime === null || endTime === null) {
     return null;
   }
 
   const start = new Date(startTime);
-  const end = new Date(endTIme);
+  const end = new Date(endTime);
 
   if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
     return null;
@@ -38,7 +38,7 @@ export async function syncMatchStatus(
   match: MatchInput,
   updateStauts: (status: MatchStatus) => Promise<void> | void
 ) {
-  const nextStatus = getMatchStauts(match.startTime, match.endTime);
+  const nextStatus = getMatchStatus(match.startTime, match.endTime);
 
   if (!nextStatus) {
     return match.status;
