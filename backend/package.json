@@ -8,13 +8,16 @@
   },
   "private": true,
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/pg": "^8.18.0"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
     "@types/ws": "^8.18.1",
+    "drizzle-orm": "^0.45.1",
+    "pg": "^8.19.0",
     "ws": "^8.19.0"
   }
 }
