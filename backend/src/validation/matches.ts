@@ -6,6 +6,7 @@ export const MATCH_STATUS = {
   FINISHED: 'finished',
 };
 
+const isoDateString = z.iso.datetime();
 
 export const listMatchesQuerySchema = z.object({
   limit: z.coerce.number().int().positive().max(100).optional(),
@@ -20,8 +21,8 @@ export const createMatchSchema = z
     sport: z.string().min(1),
     homeTeam: z.string().min(1),
     awayTeam: z.string().min(1),
-    startTime: z.string().datetime({ offset: true }),
-    endTime: z.string().datetime({ offset: true }),
+    startTime: isoDateString,
+    endTime: isoDateString,
     homeScore: z.coerce.number().int().nonnegative().optional(),
     awayScore: z.coerce.number().int().nonnegative().optional(),
   })
