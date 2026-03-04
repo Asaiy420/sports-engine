@@ -3,6 +3,7 @@ import 'dotenv/config';
 import { matchRouter } from './routes/matches';
 import http from 'http';
 import { attachWebSocketServer } from './ws/server';
+import { securityMiddleware } from '../arcjet';
 
 const PORT = process.env.PORT!;
 const HOST = process.env.HOST!;
@@ -12,6 +13,7 @@ const app = express();
 const server = http.createServer(app);
 
 app.use(express.json());
+app.use(securityMiddleware());
 
 app.use('/matches', matchRouter);
 
