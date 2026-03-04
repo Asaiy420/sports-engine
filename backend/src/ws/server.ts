@@ -22,12 +22,11 @@ function unSubscribeFromMatch(matchId: number, socket: WebSocket) {
   const subscribers = matchSubscribers.get(matchId);
 
   if (!subscribers) return;
+  subscribers.delete(socket);
   if (subscribers.size === 0) {
     matchSubscribers.delete(matchId);
   }
-  subscribers.delete(socket);
 }
-
 function cleanUpSubscriptions(socket: ExtWebSocket) {
   for (const matchId of socket.subscriptions) {
     unSubscribeFromMatch(matchId, socket);
@@ -69,14 +68,13 @@ function handleMessage(socket: ExtWebSocket, data: WebSocket.RawData) {
   try {
     message = JSON.parse(data.toString()); // this converts buffer to string and then parses it as JSON
   } catch (e) {
+    console.error('WebSocket JSON parse error:', e);
     sendJson(socket, {
       type: 'error',
       error: 'Invalid JSON',
-      e,
     });
     return;
   }
-
   if (message?.type === 'subscribe' && Number.isInteger(message.matchId)) {
     subscribeToMatch(message.matchId as number, socket);
     socket.subscriptions.add(message.matchId as number);
