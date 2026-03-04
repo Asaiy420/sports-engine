@@ -5,10 +5,7 @@ import { db } from '../db/db';
 import { commentary } from '../db/schema';
 import { desc, eq } from 'drizzle-orm';
 import { listCommentaryQuery } from '../validation/commentary';
-import {
-  listMatchesQuerySchema,
-  matchIdParamSchema,
-} from '../validation/matches';
+import { matchIdParamSchema } from '../validation/matches';
 
 export const commentaryRouter = Router({ mergeParams: true });
 const MAX_LIMIT = 100;
@@ -34,7 +31,7 @@ commentaryRouter.get('/', async (req: Request, res: Response) => {
 
   try {
     const { id: matchId } = paramsResult.data;
-    const { limit = 10 } = queryResult.data;
+    const { limit = MAX_LIMIT } = queryResult.data;
 
     const safeLimit = Math.min(limit, MAX_LIMIT);
 
@@ -83,13 +80,13 @@ commentaryRouter.post('/', async (req: Request, res: Response) => {
       })
       .returning();
 
-    if (res.app.locals.broadcastCommentary) {
+    if (res.app.locals.broadcastCommentary && result) { 
       res.app.locals.broadcastCommentary(result?.matchId, result);
     }
 
     res.status(201).json({ data: result });
   } catch (e) {
-    console.error('Failed to load commentary', e);
-    res.status(500).json({ error: 'Failed to load commentary' });
+    console.error('Failed to create commentary', e);
+    res.status(500).json({ error: 'Failed to create commentary' });
   }
 });
