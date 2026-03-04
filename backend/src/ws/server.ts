@@ -38,12 +38,14 @@ export function attachWebSocketServer(server: HttpServer) {
   const interval = setInterval(() => {
     wss.clients.forEach(ws => {
       const extWs = ws as ExtWebSocket;
-      if (extWs.isAlive === false) return ws.terminate();
-      extWs.isAlive = false;
-      ws.ping();
+      if (extWs.isAlive === false) {
+        ws.terminate();
+      } else {
+        extWs.isAlive = false;
+        ws.ping();
+      }
     });
   }, 30000);
-
   wss.on('close', () => clearInterval(interval));
 
   function broadcastMatchCreated(match: typeof matches.$inferSelect) {
