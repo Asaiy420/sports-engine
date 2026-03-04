@@ -4,6 +4,7 @@ import { matchRouter } from './routes/matches';
 import http from 'http';
 import { attachWebSocketServer } from './ws/server';
 import { securityMiddleware } from '../arcjet';
+import { commentaryRouter } from './routes/commentary';
 
 const PORT = process.env.PORT!;
 const HOST = process.env.HOST!;
@@ -16,9 +17,11 @@ app.use(express.json());
 app.use(securityMiddleware());
 
 app.use('/matches', matchRouter);
+app.use('/matches/:id/commentary', commentaryRouter);
 
-const { broadcastMatchCreated } = attachWebSocketServer(server);
+const { broadcastMatchCreated, broadcastCommentary } = attachWebSocketServer(server);
 app.locals.broadcastMatchCreated = broadcastMatchCreated;
+app.locals.broadcastCommentary = broadcastCommentary;
 
 server.listen(PORT, parseInt(HOST), () => {
   const baseUrl =
