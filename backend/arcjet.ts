@@ -1,4 +1,4 @@
-import arcject, { detectBot, shield, slidingWindow } from '@arcjet/node';
+import arcjet, { detectBot, shield, slidingWindow } from '@arcjet/node';
 import type { NextFunction, Request, Response } from 'express';
 
 const arcjetKey = process.env.ARCJET_KEY!;
@@ -7,7 +7,7 @@ const arcjetMode = process.env.ARCJET_MODE === 'DRY_RUN' ? 'DRY_RUN' : 'LIVE';
 if (!arcjetKey) throw new Error('ARCJET_KEY Environment Variable is missing');
 
 export const httpArcjet = arcjetKey
-  ? arcject({
+  ? arcjet({
       key: arcjetKey,
       rules: [
         shield({
@@ -27,7 +27,7 @@ export const httpArcjet = arcjetKey
   : null;
 
 export const wsArcjet = arcjetKey
-  ? arcject({
+  ? arcjet({
       key: arcjetKey,
       rules: [
         shield({
@@ -59,7 +59,7 @@ export function securityMiddleware() {
         return res.status(403).json({ error: 'Forbidden' });
       }
     } catch (e) {
-      console.error('Arcject middleware error', e);
+      console.error('Arcjet middleware error', e);
       return res.status(503).json({ error: 'Service Unavailable' });
     }
     next();
