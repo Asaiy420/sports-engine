@@ -3,6 +3,7 @@ import AgentAPI from 'apminsight';
 AgentAPI.config();
 
 import express, { type Request, type Response } from 'express';
+import cors from 'cors';
 import 'dotenv/config';
 import { matchRouter } from './routes/matches';
 import http from 'http';
@@ -18,6 +19,7 @@ const app = express();
 const server = http.createServer(app);
 
 app.use(express.json());
+app.use(cors({ origin: process.env.FRONTEND_URL || '*' }));
 app.use(securityMiddleware());
 
 app.use('/matches', matchRouter);

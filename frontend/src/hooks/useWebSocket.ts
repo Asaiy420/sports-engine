@@ -10,8 +10,10 @@ export function useWebSocket(onMessage: MessageHandler) {
   onMessageRef.current = onMessage;
 
   useEffect(() => {
-    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    const url = `${protocol}://${window.location.host}/ws`;
+    const envWs = import.meta.env.VITE_WS_URL;
+    const url = envWs
+      ? `${envWs}/ws`
+      : `${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}/ws`;
 
     const ws = new WebSocket(url);
     wsRef.current = ws;
