@@ -18,7 +18,7 @@ export function MatchDetailPage() {
   const handleWsMessage = useCallback(
     (msg: WsMessage) => {
       if (msg.type === 'commentary' && msg.data.matchId === matchId) {
-        setComments((prev) => [msg.data, ...prev]);
+        setComments(prev => [msg.data, ...prev]);
       }
     },
     [matchId]
@@ -39,7 +39,7 @@ export function MatchDetailPage() {
 
     Promise.all([fetchMatches(), fetchCommentary(matchId)])
       .then(([matches, commentary]) => {
-        const found = matches.find((m) => m.id === matchId);
+        const found = matches.find(m => m.id === matchId);
         if (found) setMatch(found);
         setComments(commentary);
       })
@@ -48,17 +48,17 @@ export function MatchDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex h-64 items-center justify-center">
-        <p className="text-gray-500">Loading…</p>
+      <div className='flex h-64 items-center justify-center'>
+        <p className='text-gray-500'>Loading…</p>
       </div>
     );
   }
 
   if (!match) {
     return (
-      <div className="flex h-64 flex-col items-center justify-center gap-2">
-        <p className="text-gray-500">Match not found.</p>
-        <Link to="/" className="text-sm text-blue-600 hover:underline">
+      <div className='flex h-64 flex-col items-center justify-center gap-2'>
+        <p className='text-gray-500'>Match not found.</p>
+        <Link to='/' className='text-sm text-blue-600 hover:underline'>
           ← Back to matches
         </Link>
       </div>
@@ -66,58 +66,103 @@ export function MatchDetailPage() {
   }
 
   return (
-    <div>
-      {/* Back link */}
+    <div className='space-y-6'>
       <Link
-        to="/"
-        className="mb-4 inline-block text-sm text-blue-600 hover:underline"
+        to='/'
+        className='inline-flex items-center gap-2 rounded-full border border-(--line) bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-(--muted) transition hover:border-(--accent) hover:text-(--accent)'
       >
-        ← All Matches
+        ← All matches
       </Link>
 
-      {/* Scoreboard */}
-      <div className="mb-8 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-        <div className="mb-3 flex items-center justify-between">
-          <span className="text-xs font-medium uppercase tracking-wider text-gray-400">
-            {match.sport}
-          </span>
-          <div className="flex items-center gap-3">
-            <ConnectionDot connected={connected} />
-            <StatusBadge status={match.status} />
+      <div className='grid gap-6 lg:grid-cols-[1.2fr_1fr]'>
+        <div className='space-y-6'>
+          <div className='rounded-2xl border border-(--line) bg-white/90 p-6 shadow-sm'>
+            <div className='mb-4 flex flex-wrap items-center justify-between gap-3'>
+              <span className='rounded-full border border-(--line) bg-(--chip) px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-(--muted)'>
+                {match.sport}
+              </span>
+              <div className='flex items-center gap-3'>
+                <ConnectionDot connected={connected} />
+                <StatusBadge status={match.status} />
+              </div>
+            </div>
+
+            <div className='grid grid-cols-[1fr_auto_1fr] items-center gap-4'>
+              <div className='min-w-0 text-right'>
+                <p className='text-sm uppercase tracking-[0.3em] text-(--muted)'>
+                  Home
+                </p>
+                <p className='truncate text-2xl font-semibold text-(--ink)'>
+                  {match.homeTeam}
+                </p>
+              </div>
+              <div className='flex items-center gap-3 text-5xl font-semibold tabular-nums text-(--ink)'>
+                <span>{match.homeScore}</span>
+                <span className='text-(--line)'>–</span>
+                <span>{match.awayScore}</span>
+              </div>
+              <div className='min-w-0 text-left'>
+                <p className='text-sm uppercase tracking-[0.3em] text-(--muted)'>
+                  Away
+                </p>
+                <p className='truncate text-2xl font-semibold text-(--ink)'>
+                  {match.awayTeam}
+                </p>
+              </div>
+            </div>
+
+            <div className='mt-5 flex flex-wrap items-center gap-2 text-xs text-(--muted)'>
+              <span className='rounded-full border border-(--line) bg-white px-3 py-1'>
+                Kickoff {new Date(match.startTime).toLocaleString()}
+              </span>
+            </div>
+          </div>
+
+          <div className='grid gap-4 sm:grid-cols-2'>
+            <div className='rounded-2xl border border-(--line) bg-white/90 p-5'>
+              <p className='text-xs uppercase tracking-[0.3em] text-(--muted)'>
+                Match status
+              </p>
+              <p className='mt-2 text-2xl font-semibold text-(--ink)'>
+                {match.status === 'live' ? 'In play' : match.status}
+              </p>
+              <p className='mt-1 text-sm text-(--muted)'>
+                Live stream powered commentary feed.
+              </p>
+            </div>
+            <div className='rounded-2xl border border-(--line) bg-white/90 p-5'>
+              <p className='text-xs uppercase tracking-[0.3em] text-(--muted)'>
+                Commentary
+              </p>
+              <p className='mt-2 text-2xl font-semibold text-(--ink)'>
+                {comments.length}
+              </p>
+              <p className='mt-1 text-sm text-(--muted)'>
+                Total updates captured.
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-6">
-          <div className="min-w-0 flex-1 text-right">
-            <p className="text-lg font-bold text-gray-900">{match.homeTeam}</p>
+        <div className='rounded-2xl border border-(--line) bg-white/90 p-6 shadow-sm'>
+          <div className='mb-4 flex items-center justify-between'>
+            <h2 className='text-lg font-semibold text-(--ink)'>Commentary</h2>
+            <span className='rounded-full border border-(--line) bg-(--chip) px-3 py-1 text-xs font-semibold text-(--muted)'>
+              Live feed
+            </span>
           </div>
-          <div className="flex items-center gap-3 text-4xl font-extrabold tabular-nums text-gray-900">
-            <span>{match.homeScore}</span>
-            <span className="text-gray-300">–</span>
-            <span>{match.awayScore}</span>
-          </div>
-          <div className="min-w-0 flex-1 text-left">
-            <p className="text-lg font-bold text-gray-900">{match.awayTeam}</p>
-          </div>
-        </div>
 
-        <p className="mt-3 text-center text-xs text-gray-400">
-          {new Date(match.startTime).toLocaleString()}
-        </p>
+          {comments.length === 0 ? (
+            <p className='text-sm text-(--muted)'>No commentary yet.</p>
+          ) : (
+            <div className='flex flex-col gap-3'>
+              {comments.map(c => (
+                <CommentaryItem key={c.id} item={c} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
-
-      {/* Commentary feed */}
-      <h2 className="mb-4 text-lg font-semibold text-gray-900">Commentary</h2>
-
-      {comments.length === 0 ? (
-        <p className="text-sm text-gray-400">No commentary yet.</p>
-      ) : (
-        <div className="flex flex-col gap-3">
-          {comments.map((c) => (
-            <CommentaryItem key={c.id} item={c} />
-          ))}
-        </div>
-      )}
     </div>
   );
 }

@@ -1,2 +1,39 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
+:root {
+  --canvas: #f7f6f2;
+  --surface: #ffffff;
+  --ink: #111514;
+  --muted: #5b6b63;
+  --line: #e2e8e3;
+  --accent: #137a5b;
+  --accent-strong: #0f5f47;
+  --chip: #eef2ee;
+  --warning: #b26b00;
+  --danger: #b42318;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--canvas);
+  color: var(--ink);
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  letter-spacing: 0.01em;
+  background-image:
+    linear-gradient(to right, rgba(17, 21, 20, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 21, 20, 0.03) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+  letter-spacing: -0.01em;
+}

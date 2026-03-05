@@ -8,36 +8,41 @@ export function MatchCard({ match }: { match: Match }) {
   return (
     <Link
       to={`/matches/${match.id}`}
-      className="block rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
+      className='group block rounded-2xl border border-(--line) bg-white/90 p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-(--accent) hover:shadow-lg'
     >
-      <div className="mb-3 flex items-center justify-between">
-        <span className="text-xs font-medium uppercase tracking-wider text-gray-400">
+      <div className='mb-4 flex items-center justify-between'>
+        <span className='rounded-full border border-(--line) bg-(--chip) px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.3em] text-(--muted)'>
           {match.sport}
         </span>
         <StatusBadge status={match.status} />
       </div>
 
-      <div className="flex items-center justify-between gap-4">
-        <div className="min-w-0 flex-1 text-right">
-          <p className="truncate text-sm font-semibold text-gray-900">
+      <div className='grid grid-cols-[1fr_auto_1fr] items-center gap-3'>
+        <div className='min-w-0 text-right'>
+          <p className='truncate text-sm font-semibold text-(--ink)'>
             {match.homeTeam}
           </p>
         </div>
 
-        <div className="flex items-center gap-2 text-2xl font-bold tabular-nums text-gray-900">
+        <div className='flex items-center gap-2 text-3xl font-semibold tabular-nums text-(--ink)'>
           <span>{match.homeScore}</span>
-          <span className="text-gray-300">–</span>
+          <span className='text-(--line)'>–</span>
           <span>{match.awayScore}</span>
         </div>
 
-        <div className="min-w-0 flex-1 text-left">
-          <p className="truncate text-sm font-semibold text-gray-900">
+        <div className='min-w-0 text-left'>
+          <p className='truncate text-sm font-semibold text-(--ink)'>
             {match.awayTeam}
           </p>
         </div>
       </div>
 
-      <p className="mt-3 text-center text-xs text-gray-400">{startDate}</p>
+      <div className='mt-4 flex items-center justify-between text-xs text-(--muted)'>
+        <span>{startDate}</span>
+        <span className='font-semibold text-(--accent) group-hover:text-(--accent-strong)'>
+          View details →
+        </span>
+      </div>
     </Link>
   );
 }

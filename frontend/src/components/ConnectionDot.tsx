@@ -1,10 +1,12 @@
 export function ConnectionDot({ connected }: { connected: boolean }) {
   return (
-    <span className='flex items-center gap-1.5 text-xs'>
+    <span className='inline-flex items-center gap-2 rounded-full border border-(--line) bg-white px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.25em] text-(--muted)'>
       <span
-        className={`inline-block h-2 w-2 rounded-full ${connected ? 'bg-green-500' : 'bg-red-500'}`}
+        className={`inline-block h-2 w-2 rounded-full ${
+          connected ? 'bg-(--accent)' : 'bg-[#d64545]'
+        }`}
       />
-      {connected ? 'Live' : 'Disconnected'}
+      {connected ? 'Live' : 'Offline'}
     </span>
   );
 }
