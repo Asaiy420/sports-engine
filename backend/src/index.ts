@@ -2,7 +2,7 @@ import AgentAPI from 'apminsight';
 
 AgentAPI.config();
 
-import express from 'express';
+import express, { type Request, type Response } from 'express';
 import 'dotenv/config';
 import { matchRouter } from './routes/matches';
 import http from 'http';
@@ -20,6 +20,9 @@ const server = http.createServer(app);
 app.use(express.json());
 app.use(securityMiddleware());
 
+app.use('/', (req: Request, res: Response) => {
+  res.send('Welcome to the Sports Engine API!');
+});
 app.use('/matches', matchRouter);
 app.use('/matches/:id/commentary', commentaryRouter);
 
