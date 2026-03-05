@@ -18,13 +18,14 @@ const app = express();
 const server = http.createServer(app);
 
 app.use(express.json());
-app.use(securityMiddleware());
+// app.use(securityMiddleware());
 
-app.use('/', (req: Request, res: Response) => {
-  res.send('Welcome to the Sports Engine API!');
-});
 app.use('/matches', matchRouter);
 app.use('/matches/:id/commentary', commentaryRouter);
+
+app.get('/', (req: Request, res: Response) => {
+  res.send('Welcome to the Sports Engine API!');
+});
 
 const { broadcastMatchCreated, broadcastCommentary } =
   attachWebSocketServer(server);
